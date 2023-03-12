@@ -122,7 +122,7 @@ class Account:
 
     person = Person()
 
-    def __init__(self, person, initial_balance=None):
+    def __init__(self, person, initial_balance=0):
         try:
             self.person = person
             self.balance = float(initial_balance)
@@ -148,7 +148,7 @@ class Account:
 
 class YoungAccount(Account):
 
-    def __init__(self, person, initial_balance=None, discount=None):
+    def __init__(self, person, initial_balance=0, discount=0):
         super().__init__(person, initial_balance)
         try:
             self.discount = float(discount)
@@ -186,7 +186,7 @@ person_one = Person("Jorge", 35, "33222434")
 person_two = Person("Martin", 18, "3332232")
 print(person_one.show())
 
-account_one = Account(person_one, "500")
+account_one = Account(person_one, 1000)
 print(account_one.get_balance())
 account_one.add_money(450)
 print(account_one.get_balance())
