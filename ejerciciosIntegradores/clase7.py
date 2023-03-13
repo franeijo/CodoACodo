@@ -79,7 +79,7 @@ class Person:
 
     @name.setter
     def name(self, new_name):
-        regex = '[A-Za-z]{2,25}( [A-Za-z]{2,25})?'
+        regex = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
         if not re.match(regex, new_name):
             raise ValueError("Its not a valid name.")
         self._name = new_name
@@ -199,7 +199,7 @@ dictionary_test = string_to_dict("Hello my name name is John John")
 print(dictionary_test)
 print(dictionary_to_tuple(dictionary_test))
 
-person_one = Person("Jorge", 35, 33222434)
+person_one = Person("Martin Gomez", 35, 33222434)
 person_two = Person("Martin", 18, 3332232)
 person_one.show()
 
