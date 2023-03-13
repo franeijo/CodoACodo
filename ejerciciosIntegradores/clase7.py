@@ -1,3 +1,4 @@
+import re
 
 """
 Ejercicio1
@@ -67,46 +68,44 @@ Clase persona con constructor
 
 class Person:
 
-    def __init__(self, name="", age=0, dni=""):
-        try:
-            self.name = str(name)
-            self.age = int(age)
-            self.dni = str(dni)
-        except ValueError as e:
-            print(e)
+    def __init__(self, name="Jorge", age=0, dni=0):
+        self.name = name
+        self.age = age
+        self.dni = dni
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, new_name):
+        regex = '[A-Za-z]{2,25}( [A-Za-z]{2,25})?'
+        if not re.match(regex, new_name):
+            raise ValueError("Its not a valid name.")
+        self._name = new_name
+
+    @property
+    def age(self):
+        return self._age
+
+    @age.setter
+    def age(self, new_age):
+        if new_age <= 0:
+            raise ValueError("Its not a valid age.")
+        self._age = new_age
+
+    @property
+    def dni(self):
+        return self._dni
+
+    @dni.setter
+    def dni(self, new_dni):
+        if new_dni <= 0:
+            raise ValueError("Its not a valid DNI.")
+        self._dni = new_dni
 
     def show(self):
-        return self.name, self.age, self.dni
-
-    def set_name(self, name):
-        try:
-            name = str(name)
-            self.name = name
-        except ValueError as e:
-            print(e)
-
-    def get_name(self):
-        return self.name
-
-    def set_age(self, age):
-        try:
-            age = int(age)
-            self.age = age
-        except ValueError as e:
-            print(e)
-
-    def get_age(self):
-        return self.age
-
-    def dni(self, dni):
-        try:
-            dni = str(dni)
-            self.dni = dni
-        except ValueError as e:
-            print(e)
-
-    def get_dni(self):
-        return self.dni
+        print("Person:", self.name, self.age, self.dni)
 
     def is_older(self):
         return self.age >= 18
@@ -120,49 +119,67 @@ Clase Cuenta
 
 class Account:
 
-    person = Person()
-
     def __init__(self, person, initial_balance=0):
-        try:
-            self.person = person
-            self.balance = float(initial_balance)
-        except ValueError as e:
-            print(e)
+        self.person = person
+        self.balance = initial_balance
+
+    @property
+    def person(self):
+        return self._person
+
+    @person.setter
+    def person(self, new_person):
+        if not isinstance(new_person, Person):
+            raise ValueError("Its not a valid Person.")
+        self._person = new_person
+
+    @property
+    def balance(self):
+        return self._balance
+
+    @balance.setter
+    def balance(self, new_balance):
+        if new_balance < 1:
+            raise ValueError("Its not a valid balance")
+        self._balance = new_balance
 
     def show(self):
-        return self.person.show(), self.balance
-
-    def get_person(self):
-        return self.person.show()
-
-    def get_balance(self):
-        return self.balance
+        print("Bank Account: ")
+        self.person.show()
+        print("Balance: ", self.balance)
 
     def add_money(self, money):
         if money > 0:
-            self.balance += money
+            self._balance += money
 
     def extract_money(self, money):
-        self.balance -= money
+        self._balance -= money
 
 
 class YoungAccount(Account):
 
     def __init__(self, person, initial_balance=0, discount=0):
         super().__init__(person, initial_balance)
-        try:
-            self.discount = float(discount)
-        except ValueError as e:
-            print(e)
+        self.discount = discount
+
+    @property
+    def discount(self):
+        return self._discount
+
+    @discount.setter
+    def discount(self, new_discount):
+        if new_discount < 0:
+            raise ValueError("Its not a valid discount.")
+        self._discount = new_discount
 
     def is_valid(self):
-        return self.person.get_age() > 17 & self.person.get_age() < 25
-
-    def get_discount(self):
-        return self.discount
+        return self.person.age > 17 & self.person.age < 25
 
     def show(self):
-        return "Cuenta Joven", self.person.show(), self.get_balance(), self.get_discount()
+        print("Young Account: ")
+        self.person.show()
+        print("Balance: ", self.balance)
+        print("Discount: ", self.discount)
 
     def extract_money(self, money):
         if self.is_valid():
@@ -182,18 +199,19 @@ dictionary_test = string_to_dict("Hello my name name is John John")
 print(dictionary_test)
 print(dictionary_to_tuple(dictionary_test))
 
-person_one = Person("Jorge", 35, "33222434")
-person_two = Person("Martin", 18, "3332232")
-print(person_one.show())
+person_one = Person("Jorge", 35, 33222434)
+person_two = Person("Martin", 18, 3332232)
+person_one.show()
+
 
 account_one = Account(person_one, 1000)
-print(account_one.get_balance())
+account_one.show()
 account_one.add_money(450)
-print(account_one.get_balance())
-print(account_one.show())
+account_one.show()
+account_one.extract_money(100)
+account_one.show()
 
 account_two = YoungAccount(person_two, 500, 5)
-print(account_two.get_balance())
-print(account_two.show())
+account_two.show()
 account_two.extract_money(35)
-print(account_two.show())
+account_two.show()
