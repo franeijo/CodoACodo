@@ -173,7 +173,7 @@ class YoungAccount(Account):
         self._discount = new_discount
 
     def is_valid(self):
-        return self.person.age > 17 & self.person.age < 25
+        return 17 < self.person.age < 25
 
     def show(self):
         print("Young Account: ")
@@ -185,7 +185,7 @@ class YoungAccount(Account):
         if self.is_valid():
             self.balance -= money
         else:
-            print("No puede retirar dinero una cuenta no valida.")
+            print("Not valid extract")
 
 
 """
@@ -200,7 +200,7 @@ print(dictionary_test)
 print(dictionary_to_tuple(dictionary_test))
 
 person_one = Person("Martin Gomez", 35, 33222434)
-person_two = Person("Martin", 18, 3332232)
+person_two = Person("Martin", 15, 3332232)
 person_one.show()
 
 
