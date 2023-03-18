@@ -94,7 +94,8 @@ class Account:
             self._balance += money
 
     def extract_money(self, money):
-        self._balance -= money
+        if money > 0:
+            self._balance -= money
 
 
 class YoungAccount(Account):
@@ -123,15 +124,17 @@ class YoungAccount(Account):
         print("Discount: ", self.discount)
 
     def extract_money(self, money):
-        if self.is_valid():
-            self.balance -= money
+        try:
+            if not self.is_valid():
+                raise ValueError("Its not a valid extract for young account.")
+        except Exception as e:
+            print(e)
         else:
-            print("Not valid extract")
+            self.balance -= money
 
+# Testing Classes
 
-#Testing Class
-
-person_one = Person("Martin Gomez", 35, 33222434)
+person_one = Person("Martin Gomez", 30, 31222434)
 person_two = Person("Pedro Ramirez", 15, 3332232)
 person_one.show()
 
